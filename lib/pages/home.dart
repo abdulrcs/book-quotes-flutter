@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pemmob_crud/components/dialog_modal.dart';
 import 'package:flutter_pemmob_crud/components/todo_card.dart';
+import 'package:flutter_pemmob_crud/data/database.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,17 +12,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _controller = TextEditingController();
+  final _localBox = Hive.box('localBox');
+  TodoDatabase db = TodoDatabase();
 
-  List todos = [
-    ['Create Flutter CRUD', false],
-    ['Create Website with Bootstrap', false],
-  ];
+  @override
+  void initState() {
+    if (_localBox.get('todos') == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
+    super.initState();
+  }
+
+  final _controller = TextEditingController();
 
   void checkBoxChanged(bool value, int index) {
     setState(() {
-      todos[index][1] = !todos[index][1];
+      db.todos[index][1] = !db.todos[index][1];
     });
+    db.updateDatabase();
   }
 
   void createNewTask() {
@@ -33,19 +44,22 @@ class _HomePageState extends State<HomePage> {
             onCancel: () => Navigator.of(context).pop(),
           );
         });
+    db.updateDatabase();
   }
 
   void deleteTask(int index) {
     setState(() {
-      todos.removeAt(index);
+      db.todos.removeAt(index);
     });
+    db.updateDatabase();
   }
 
   void saveNewTask() {
     setState(() {
-      todos.add([_controller.text, false]);
+      db.todos.add([_controller.text, false]);
       Navigator.of(context).pop();
     });
+    db.updateDatabase();
   }
 
   @override
@@ -61,11 +75,11 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add),
         ),
         body: ListView.builder(
-          itemCount: todos.length,
+          itemCount: db.todos.length,
           itemBuilder: (context, index) {
             return TodoCard(
-              taskName: todos[index][0],
-              taskCompleted: todos[index][1],
+              taskName: db.todos[index][0],
+              taskCompleted: db.todos[index][1],
               onChanged: (value) => checkBoxChanged(value!, index),
               onDelete: (context) => deleteTask(index),
             );
