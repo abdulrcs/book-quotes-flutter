@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pemmob_crud/components/book_card.dart';
 import 'package:flutter_pemmob_crud/components/dialog_modal.dart';
-import 'package:flutter_pemmob_crud/components/todo_card.dart';
 import 'package:flutter_pemmob_crud/data/database.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -13,11 +13,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _localBox = Hive.box('localBox');
-  TodoDatabase db = TodoDatabase();
+  QuotesDatabase db = QuotesDatabase();
 
   @override
   void initState() {
-    if (_localBox.get('todos') == null) {
+    if (_localBox.get('quotes') == null) {
       db.createInitialData();
     } else {
       db.loadData();
@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
   void checkBoxChanged(bool value, int index) {
     setState(() {
-      db.todos[index][1] = !db.todos[index][1];
+      db.quotes[index][1] = !db.quotes[index][1];
     });
     db.updateDatabase();
   }
@@ -49,14 +49,14 @@ class _HomePageState extends State<HomePage> {
 
   void deleteTask(int index) {
     setState(() {
-      db.todos.removeAt(index);
+      db.quotes.removeAt(index);
     });
     db.updateDatabase();
   }
 
   void saveNewTask() {
     setState(() {
-      db.todos.add([_controller.text, false]);
+      db.quotes.add([_controller.text, false]);
       Navigator.of(context).pop();
     });
     db.updateDatabase();
@@ -65,9 +65,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.yellow[200],
+        backgroundColor: Colors.brown[200],
         appBar: AppBar(
-          title: Text('TODO'),
+          centerTitle: true,
+          title: Text(
+            'Book Quotes',
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           elevation: 0,
         ),
         floatingActionButton: FloatingActionButton(
@@ -75,14 +81,47 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add),
         ),
         body: ListView.builder(
-          itemCount: db.todos.length,
+          itemCount: db.quotes.length,
           itemBuilder: (context, index) {
-            return TodoCard(
-              taskName: db.todos[index][0],
-              taskCompleted: db.todos[index][1],
-              onChanged: (value) => checkBoxChanged(value!, index),
-              onDelete: (context) => deleteTask(index),
-            );
+            if (index == 0) {
+              return Expanded(
+                child: Column(
+                  children: [
+                    Column(
+                      children: [
+                        Image.asset(
+                          'assets/reading.png',
+                          width: 300,
+                        ),
+                        Text(
+                          'Good Morning!',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            color: Colors.brown,
+                            fontSize: 30.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    BookCard(
+                      quoteText: db.quotes[index][0],
+                      author: db.quotes[index][1],
+                      bookTitle: db.quotes[index][2],
+                      chapterName: db.quotes[index][3],
+                      imageUrl: db.quotes[index][4],
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return BookCard(
+                quoteText: db.quotes[index][0],
+                author: db.quotes[index][1],
+                bookTitle: db.quotes[index][2],
+                chapterName: db.quotes[index][3],
+                imageUrl: db.quotes[index][4],
+              );
+            }
           },
         ));
   }

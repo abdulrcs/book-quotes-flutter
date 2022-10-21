@@ -24,6 +24,12 @@ class TodoCard extends StatelessWidget {
           children: [
             SlidableAction(
               onPressed: onDelete,
+              icon: Icons.edit,
+              backgroundColor: Colors.blue.shade300,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            SlidableAction(
+              onPressed: onDelete,
               icon: Icons.delete,
               backgroundColor: Colors.red.shade300,
               borderRadius: BorderRadius.circular(12),
