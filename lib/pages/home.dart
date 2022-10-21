@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 30.0,
                           ),
                         ),
+                        SizedBox(height: 24),
                       ],
                     ),
                     BookCard(
