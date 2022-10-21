@@ -1,16 +1,10 @@
-# flutter_pemmob_crud
+# Book Quotes
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/54136956/197119682-3aa83673-11aa-40a0-b91a-c874e119b70d.png">
+</p>
+<p align="center">
+  An Application to save a highlight from your favorite book!<br/>
+  Made for Pemrograman Mobile 2022<br/>
+  Universitas Negeri Surabaya
+</p>
 
-Pemrograman Mobile - Flutter CRUD
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
