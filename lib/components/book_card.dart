@@ -29,12 +29,14 @@ class BookCard extends StatelessWidget {
         endActionPane: ActionPane(
           motion: const StretchMotion(),
           children: [
+            SizedBox(width: 8),
             SlidableAction(
               onPressed: onEdit,
               icon: Icons.edit,
               backgroundColor: Colors.blue.shade300,
               borderRadius: BorderRadius.circular(12),
             ),
+            SizedBox(width: 8),
             SlidableAction(
               onPressed: onDelete,
               icon: Icons.delete,

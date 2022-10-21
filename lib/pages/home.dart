@@ -25,19 +25,54 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  final _controller = TextEditingController();
+  final _controllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+  ];
 
   void editQuote(int index) {
-    setState(() {});
-    db.updateDatabase();
+    showDialog(
+      context: context,
+      builder: (context) {
+        _controllers[0].text = db.quotes[index][0];
+        _controllers[1].text = db.quotes[index][1];
+        _controllers[2].text = db.quotes[index][2];
+        _controllers[3].text = db.quotes[index][3];
+        _controllers[4].text = db.quotes[index][4];
+        return DialogModal(
+          controllers: _controllers,
+          onSave: () {
+            db.quotes[index][0] = _controllers[0].text;
+            db.quotes[index][1] = _controllers[1].text;
+            db.quotes[index][2] = _controllers[2].text;
+            db.quotes[index][3] = _controllers[3].text;
+            db.quotes[index][4] = _controllers[4].text;
+            db.updateDatabase();
+            Navigator.pop(context);
+            setState(() {});
+         },
+          onCancel: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 
   void createNewTask() {
+    _controllers[0].text = '';
+    _controllers[1].text = '';
+    _controllers[2].text = '';
+    _controllers[3].text = '';
+    _controllers[4].text = '';
     showDialog(
         context: context,
         builder: (context) {
           return DialogModal(
-            controller: _controller,
+            controllers: _controllers,
             onSave: saveNewTask,
             onCancel: () => Navigator.of(context).pop(),
           );
@@ -54,7 +89,13 @@ class _HomePageState extends State<HomePage> {
 
   void saveNewTask() {
     setState(() {
-      db.quotes.add([_controller.text, false]);
+      db.quotes.add([
+        _controllers[0].text,
+        _controllers[1].text,
+        _controllers[2].text,
+        _controllers[3].text,
+        _controllers[4].text,
+      ]);
       Navigator.of(context).pop();
     });
     db.updateDatabase();
@@ -79,6 +120,7 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add),
         ),
         body: ListView.builder(
+          padding: EdgeInsets.only(bottom: 100),
           itemCount: db.quotes.length,
           itemBuilder: (context, index) {
             if (index == 0) {

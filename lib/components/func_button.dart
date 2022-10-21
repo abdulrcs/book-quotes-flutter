@@ -15,6 +15,7 @@ class FuncButton extends StatelessWidget {
     return MaterialButton(
       onPressed: onPressed,
       color: Theme.of(context).primaryColor,
+      textColor: Colors.white,
       child: Text(text),
     );
   }
