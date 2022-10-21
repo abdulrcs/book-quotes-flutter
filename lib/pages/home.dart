@@ -27,10 +27,8 @@ class _HomePageState extends State<HomePage> {
 
   final _controller = TextEditingController();
 
-  void checkBoxChanged(bool value, int index) {
-    setState(() {
-      db.quotes[index][1] = !db.quotes[index][1];
-    });
+  void editQuote(int index) {
+    setState(() {});
     db.updateDatabase();
   }
 
@@ -47,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     db.updateDatabase();
   }
 
-  void deleteTask(int index) {
+  void deleteQuote(int index) {
     setState(() {
       db.quotes.removeAt(index);
     });
@@ -110,6 +108,8 @@ class _HomePageState extends State<HomePage> {
                       bookTitle: db.quotes[index][2],
                       chapterName: db.quotes[index][3],
                       imageUrl: db.quotes[index][4],
+                      onDelete: (context) => deleteQuote(index),
+                      onEdit: (context) => editQuote(index),
                     ),
                   ],
                 ),
@@ -121,6 +121,8 @@ class _HomePageState extends State<HomePage> {
                 bookTitle: db.quotes[index][2],
                 chapterName: db.quotes[index][3],
                 imageUrl: db.quotes[index][4],
+                onDelete: (context) => deleteQuote(index),
+                onEdit: (context) => editQuote(index),
               );
             }
           },
